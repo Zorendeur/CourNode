@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mes tâches</title>
+  </head>
+  <body>
+    <h1>Ajouter une tâche</h1>
+    <form id="todoForm">
+      <input type="text" id="titre" placeholder="Titre" required />
+      <input type="text" id="description" placeholder="Description" />
+      <button type="submit">Ajouter</button>
+    </form>
+
+    <h2>Tâches</h2>
+    <ul id="listeTodos"></ul>
+
+    <script>
+      const form = document.getElementById("todoForm");
+      const liste = document.getElementById("listeTodos");
+
+      const afficherTodos = async () => {
+        const res = await fetch("/api/todos");
+        const todos = await res.json();
+        liste.innerHTML = "";
+
+        todos.forEach((todo) => {
+          const li = document.createElement("li");
+          li.textContent = `${todo.titre} (${todo.complete ? "✅" : "❌"})`;
+
+          // Bouton toggle
+          const toggleBtn = document.createElement("button");
+          toggleBtn.textContent = todo.complete ? "Réactiver" : "Terminer";
+
+          toggleBtn.addEventListener("click", async () => {
+            await fetch(`/api/todos/${todo.id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ complete: !todo.complete }),
+            });
+            afficherTodos();
+          });
+
+          // Bouton supprimer
+          const deleteBtn = document.createElement("button");
+          deleteBtn.textContent = "Supprimer";
+          deleteBtn.addEventListener("click", async () => {
+            await fetch(`/api/todos/${todo.id}`, { method: "DELETE" });
+            afficherTodos();
+          });
+
+          li.appendChild(toggleBtn);
+          li.appendChild(deleteBtn);
+          liste.appendChild(li);
+        });
+      };
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const titre = document.getElementById("titre").value;
+        const description = document.getElementById("description").value;
+
+        await fetch("/api/todos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ titre, description }),
+        });
+
+        form.reset();
+        afficherTodos();
+      });
+
+      afficherTodos();
+    </script>
+  </body>
+</html>

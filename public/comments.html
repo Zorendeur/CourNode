@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Articles & Commentaires</title>
+  <style>
+    body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 2rem; }
+    h1, h2 { border-bottom: 1px solid #ccc; padding-bottom: 0.5rem; }
+    .article { border: 1px solid #ddd; padding: 1rem; margin-bottom: 2rem; }
+    .comment { margin-left: 1rem; padding-left: 1rem; border-left: 2px solid #eee; }
+    .comment-form textarea { width: 100%; }
+    form { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Créer un nouvel article</h1>
+  <form id="articleForm">
+    <input type="text" id="titre" placeholder="Titre" required><br><br>
+    <textarea id="contenu" placeholder="Contenu" rows="4" required></textarea><br><br>
+    <input type="text" id="auteur" placeholder="Auteur (optionnel)">
+    <button type="submit">Publier</button>
+  </form>
+
+  <h2>Articles récents</h2>
+  <div id="articlesContainer"></div>
+
+  <script>
+    const articleForm = document.getElementById("articleForm");
+    const container = document.getElementById("articlesContainer");
+
+    // ➕ Créer un nouvel article
+    articleForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const titre = document.getElementById("titre").value;
+      const contenu = document.getElementById("contenu").value;
+      const auteur = document.getElementById("auteur").value;
+
+      await fetch("/api/articles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ titre, contenu, auteur })
+      });
+
+      articleForm.reset();
+      afficherArticles();
+    });
+
+    // 📥 Ajouter un commentaire
+    async function submitComment(articleId, textarea) {
+      const contenu = textarea.value;
+      if (!contenu) return;
+
+      await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contenu, article_id: articleId })
+      });
+
+      afficherArticles();
+    }
+
+    // 📄 Afficher les articles + commentaires
+    async function afficherArticles() {
+      container.innerHTML = "";
+
+      const res = await fetch("/api/articles");
+      const articles = await res.json();
+
+      for (const article of articles) {
+        const div = document.createElement("div");
+        div.className = "article";
+        div.innerHTML = `
+          <h3>${article.titre}</h3>
+          <p>${article.contenu}</p>
+          <small>Par ${article.auteur ?? "Inconnu"} — ${new Date(article.date_creation).toLocaleString()}</small>
+          <h4>Commentaires</h4>
+          <div class="commentaires" id="comments-${article.id}">Chargement...</div>
+          <form class="comment-form">
+            <textarea rows="2" placeholder="Laisser un commentaire..."></textarea><br>
+            <button type="submit">Envoyer</button>
+          </form>
+        `;
+
+        // Ajout du formulaire de commentaire
+        const form = div.querySelector("form");
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const textarea = form.querySelector("textarea");
+          await submitComment(article.id, textarea);
+        });
+
+        container.appendChild(div);
+
+        // Charger les commentaires
+        const commentsRes = await fetch(`/api/comments/articles/${article.id}/comments`);
+        const comments = await commentsRes.json();
+        const commentsDiv = div.querySelector(`#comments-${article.id}`);
+        commentsDiv.innerHTML = comments.length
+          ? comments.map(c => `<div class="comment">${c.contenu} <br><small>${new Date(c.date_creation).toLocaleString()}</small></div>`).join("")
+          : "<i>Aucun commentaire</i>";
+      }
+    }
+
+    afficherArticles();
+  </script>
+</body>
+</html>
