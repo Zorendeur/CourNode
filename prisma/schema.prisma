@@ -13,6 +13,7 @@ datasource db {
 model articles {
   id            BigInt         @id @default(autoincrement())
   titre         String?
+  categorie     String?
   contenu       String?
   date_creation DateTime?      @default(now()) @map("date_creation") @db.Timestamp(6)
   commentaires  commentaires[]
@@ -43,7 +44,7 @@ model notes {
 }
 
 model profils {
-  id            String    @id @db.Uuid
+  id            String    @id @default(uuid())
   nom           String?
   bio           String?
   date_creation DateTime? @default(now()) @db.Timestamp(6)
@@ -60,13 +61,13 @@ model todos {
   @@schema("public")
 }
 
-model AnnonceNollan {
-  id BigInt  @id @default(autoincrement())
-  title String
-  price Float
-  published Boolean @default(false)
-  createdAt DateTime @default(now()) 
+model userscustom {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password_hash String
+  pseudo        String?
+  localite      String?
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
 
   @@schema("public")
-
 }
