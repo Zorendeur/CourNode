@@ -1,0 +1,72 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  schemas   = ["public"]
+}
+
+model articles {
+  id            BigInt         @id @default(autoincrement())
+  titre         String?
+  contenu       String?
+  date_creation DateTime?      @default(now()) @map("date_creation") @db.Timestamp(6)
+  commentaires  commentaires[]
+
+  @@map("articles")
+  @@schema("public")
+}
+
+
+model commentaires {
+  id            BigInt    @id @default(autoincrement())
+  contenu       String?
+  auteur        String?
+  article_id    BigInt?
+  date_creation DateTime? @default(now()) @db.Timestamp(6)
+  articles      articles? @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model notes {
+  id      BigInt    @id @default(autoincrement())
+  titre   String?
+  contenu String?
+  date    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model profils {
+  id            String    @id @db.Uuid
+  nom           String?
+  bio           String?
+  date_creation DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model todos {
+  id          BigInt   @id @default(autoincrement())
+  titre       String?
+  description String?
+  complete    Boolean? @default(false)
+
+  @@schema("public")
+}
+
+model AnnonceNollan {
+  id BigInt  @id @default(autoincrement())
+  title String
+  price Float
+  published Boolean @default(false)
+  createdAt DateTime @default(now()) 
+
+  @@schema("public")
+
+}
