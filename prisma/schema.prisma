@@ -14,7 +14,6 @@ model articles {
   id            BigInt         @id @default(autoincrement())
   titre         String?
   categorie     String?
-  contenu       String?
   date_creation DateTime?      @default(now()) @map("date_creation") @db.Timestamp(6)
   commentaires  commentaires[]
 
