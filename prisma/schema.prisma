@@ -71,6 +71,7 @@ model userscustom {
 
   @@schema("public")
 }
+
 model Joshua {
   id String @id @default(uuid())
   title String
