@@ -42,15 +42,6 @@ model notes {
   @@schema("public")
 }
 
-model annonce_wyatt {
-  id      BigInt    @id @default(autoincrement())
-  titre   String?
-  contenu String?
-  date    DateTime? @default(now()) @db.Timestamp(6)
-
-  @@schema("public")
-}
-
 model profils {
   id            String    @id @db.Uuid
   nom           String?
@@ -88,4 +79,113 @@ model valentin {
   createdAt  DateTime @default(now())
 
    @@schema("public")
+}
+
+model wyatt {
+  id      BigInt    @id @default(autoincrement())
+  titre   String?
+  contenu String?
+  date    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model mehdi {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model joshua {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model jeanpaul {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model nollan {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model julien {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model axel {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model corinne {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model bocar {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model alxis {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
+model celine {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
 }
