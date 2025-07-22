@@ -71,3 +71,13 @@ model userscustom {
 
   @@schema("public")
 }
+
+model jean {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
