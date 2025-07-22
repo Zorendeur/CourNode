@@ -43,6 +43,15 @@ model notes {
   @@schema("public")
 }
 
+model annonce_wyatt {
+  id      BigInt    @id @default(autoincrement())
+  titre   String?
+  contenu String?
+  date    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}
+
 model profils {
   id            String    @id @default(uuid())
   nom           String?
