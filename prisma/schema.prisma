@@ -13,7 +13,6 @@ datasource db {
 model articles {
   id            BigInt         @id @default(autoincrement())
   titre         String?
-  categorie     String?
   contenu       String?
   date_creation DateTime?      @default(now()) @map("date_creation") @db.Timestamp(6)
   commentaires  commentaires[]
@@ -53,7 +52,7 @@ model annonce_wyatt {
 }
 
 model profils {
-  id            String    @id @default(uuid())
+  id            String    @id @db.Uuid
   nom           String?
   bio           String?
   date_creation DateTime? @default(now()) @db.Timestamp(6)
@@ -71,7 +70,7 @@ model todos {
 }
 
 model userscustom {
-  id            String    @id @default(uuid())
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   email         String    @unique
   password_hash String
   pseudo        String?
