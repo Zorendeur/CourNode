@@ -80,13 +80,22 @@ model userscustom {
 
   @@schema("public")
 }
-
-model julien {
-  id         Int      @id @default(autoincrement())
-  title      String
-  price      Float
-  published  Boolean  @default(false)
-  createdAt  DateTime @default(now())
+model Joshua {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
 
    @@schema("public")
+}
+
+model axel {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
 }
