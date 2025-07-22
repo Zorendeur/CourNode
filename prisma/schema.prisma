@@ -71,3 +71,12 @@ model userscustom {
 
   @@schema("public")
 }
+model valentin {
+  id         Int      @id @default(autoincrement())
+  title      String
+  price      Float
+  published  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+   @@schema("public")
+}
