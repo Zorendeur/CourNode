@@ -71,7 +71,7 @@ model userscustom {
 
   @@schema("public")
 }
-model Joshua {
+model axel {
   id String @id @default(uuid())
   title String
   price Float
