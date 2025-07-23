@@ -1,4 +1,4 @@
-const model = require('../models/articles.model');
+const model = require("../models/articles.model");
 
 exports.getAll = async (req, res) => {
   try {
@@ -49,3 +49,16 @@ exports.getAll = async (req, res) => {
 //     res.status(500).json({ error: e.message });
 //   }
 // };
+
+exports.createArticles = async (req, res) => {
+  const { titre, contenu, commentaires } = req.body;
+  if (!titre || !contenu || !commentaires || !Array.isArray(commentaires) || commentaires.length === 0) {
+    return res.status(400).json({ message: "Titre, contenu & au moins un commentaire requis." });
+  }
+  try {
+    const article = await model.createArticlesAndCommentaires({ titre, contenu, commentaires });
+    res.status(201).json(article);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+};

@@ -52,3 +52,22 @@ exports.getAllArticles = async () => {
 //   if (error) throw error;
 //   return true;
 // };
+
+exports.createArticlesAndCommentaires = async ({ titre, contenu, commentaires }) => {
+  const article = await prisma.articles.create({
+    data: {
+      titre,
+      contenu,
+      commentaires: {
+        create: commentaires.map((c) => ({
+          contenu: c.contenu,
+          auteur: c.auteur,
+        })),
+      },
+    },
+    include: {
+      commentaires: true,
+    },
+  });
+  console.log(JSON.stringify(article, (k, v) => (typeof v === "bigint" ? v.toString() : v), 2));
+};
