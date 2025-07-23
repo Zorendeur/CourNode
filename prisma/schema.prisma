@@ -189,3 +189,4 @@ model celine {
 
   @@schema("public")
 }
+

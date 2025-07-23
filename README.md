@@ -1,2 +1,0 @@
-# CourNode
-# bbbbb
