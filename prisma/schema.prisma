@@ -60,17 +60,6 @@ model todos {
   @@schema("public")
 }
 
-model userscustom {
-  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email         String    @unique
-  password_hash String
-  pseudo        String?
-  localite      String?
-  created_at    DateTime? @default(now()) @db.Timestamp(6)
-
-  @@schema("public")
-}
-
 model valentin {
   id         Int      @id @default(autoincrement())
   title      String
@@ -190,3 +179,12 @@ model celine {
   @@schema("public")
 }
 
+model mallaury {
+  id String @id @default(uuid())
+  title String
+  price Float
+  published Boolean
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("public")
+}

@@ -21,7 +21,7 @@ ADD CONSTRAINT "profils_pkey" PRIMARY KEY ("id");
 -- AlterTable
 ALTER TABLE "public"."userscustom" DROP CONSTRAINT "userscustom_pkey",
 DROP COLUMN "id",
-ADD COLUMN     "id" UUID NOT NULL DEFAULT uuid_generate_v4(),
+ADD COLUMN     "id" UUID NOT NULL,
 ADD CONSTRAINT "userscustom_pkey" PRIMARY KEY ("id");
 
 -- DropTable
