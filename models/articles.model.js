@@ -5,31 +5,29 @@ exports.getAllArticles = async () => {
   const articles = await prisma.articles.findMany({
     where: {
       titre: {
-        contains: "e"
-      }
+        contains: "e",
+        mode: "insensitive",
+      },
     },
     orderBy: {
-      date_creation: "desc"
+      date_creation: "desc",
     },
     select: {
+      id: true,
       titre: true,
       contenu: true,
+      date_creation: true,
       commentaires: {
         select: {
           contenu: true,
-          auteur: true
-        }
-      }
+          auteur: true,
+        },
+      },
     },
-    take: 3
+    take: 3,
   });
-
-  console.log(JSON.stringify(articles, (k, v) => (typeof v === 'bigint' ? v.toString() : v), 2));
+  console.log(JSON.stringify(articles, (k, v) => (typeof v === "bigint" ? v.toString() : v), 2));
 };
-
-  
-
-
 
 // exports.getArticleById = async (id) => {
 //   const { data, error } = await supabase.from('articles').select('*').eq('id', id).single();
