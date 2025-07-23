@@ -3,30 +3,32 @@ const prisma = require("../services/prismaClient");
 
 exports.getAllArticles = async () => {
   const articles = await prisma.articles.findMany({
-  where: {
-    titre: {
-      contains: "e"
-    }
-  },
-  orderBy: {
-    date_creation: "desc"
-  },
-  select: {
-    id: true,
-    titre: true,
-    contenu: true,
-    date_creation: true,
-    commentaires: {
-      select: {
-        contenu: true,
-        auteur: true
+    where: {
+      titre: {
+        contains: "e"
       }
-    }
-  },
-  take: 3
-})
-console.log(articles);
-}
+    },
+    orderBy: {
+      date_creation: "desc"
+    },
+    select: {
+      titre: true,
+      contenu: true,
+      commentaires: {
+        select: {
+          contenu: true,
+          auteur: true
+        }
+      }
+    },
+    take: 3
+  });
+
+  console.log(JSON.stringify(articles, (k, v) => (typeof v === 'bigint' ? v.toString() : v), 2));
+};
+
+  
+
 
 
 // exports.getArticleById = async (id) => {
